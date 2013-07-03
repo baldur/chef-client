@@ -84,6 +84,7 @@ checksum   = Digest::MD5.hexdigest "#{node['fqdn'] or 'unknown-hostname'}"
 sleep_time = checksum.to_s.hex % node['chef_client']['splay'].to_i
 env        = node['chef_client']['cron']['environment_variables']
 log_file   = node["chef_client"]["cron"]["log_file"]
+predicate  = node['chef_client']['cron']['predicate_command']
 
 # If "use_cron_d" is set to true, delete the cron entry that uses the cron
 # resource built in to Chef and instead use the cron_d LWRP.
@@ -111,6 +112,6 @@ else
     path    node['chef_client']['cron']['path'] if node['chef_client']['cron']['path']
     user    "root"
     shell   "/bin/bash"
-    command "/bin/sleep #{sleep_time}; #{env} #{client_bin} &> #{log_file}"
+    command "/bin/sleep #{sleep_time}; #{predicate} && #{env} #{client_bin} &> #{log_file}"
   end
 end

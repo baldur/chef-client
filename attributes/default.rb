@@ -36,7 +36,8 @@ default["chef_client"]["cron"] = {
   "path" => nil,
   "environment_variables" => nil,
   "log_file" => "/dev/null",
-  "use_cron_d" => false
+  "use_cron_d" => false,
+  "predicate_command" => "true"
 }
 default["chef_client"]["environment"] = nil
 default["chef_client"]["load_gems"] = {}
